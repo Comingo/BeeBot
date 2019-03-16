@@ -8,10 +8,20 @@ client.on("ready", () => {
   client.user.setActivity(`${client.guilds.size} серверов || %help`, {type: "WATCHING"})
 });
 
-client.on("guildAdd", () => {
+client.on("guildCreate", guild => {
   let hue = client.channels.get("555426672225157132")
   const guildadd = new Discord.RichEmbed()
   .setTitle("Новый гилд.")
+  .setColor("RANDOM")
+  .setDescription(`Имя сервера: ${guild.name}\n\nОвнер: ${guild.owner}\n\n Гилд-ид: ${guild.id}`)
+  .setFooter("Alfred");
+  hue.send(guildadd);
+});
+
+client.on("guildCreate", guild => {
+  let hue = client.channels.get("555426672225157132")
+  const guildadd = new Discord.RichEmbed()
+  .setTitle("Пока, гилд.")
   .setColor("RANDOM")
   .setDescription(`Имя сервера: ${guild.name}\n\nОвнер: ${guild.owner}\n\n Гилд-ид: ${guild.id}`)
   .setFooter("Alfred");
@@ -42,6 +52,7 @@ client.on("message", (message) => {
         message.channel.send(serverembed);
   }
 });
+
 
 client.on("message", (message) => {
   let messageArray = message.content.split(" ");
