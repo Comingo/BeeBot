@@ -18,7 +18,7 @@ client.on("guildCreate", (guild) => {
   hue.send(guildadd);
 });
 
-client.on("guildCreate", (guild) => {
+client.on("guildDelete", (guild) => {
   let hue = client.channels.get("555426672225157132")
   const guildadd = new Discord.RichEmbed()
   .setTitle("Пока, гилд.")
