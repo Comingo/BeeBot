@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const weather = require("weather-js");
 const strftime = require("strftime");
+const YTDL = require("ytdl-core")
 const prefix = '%'
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
@@ -16,7 +17,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
-    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n%botinvite - пригласить бота на свой сервер")
+    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n%botinvite - пригласить бота на свой сервер\n%play - включить песню (с Ютуба)\n%stop - остановить игру.")
 
     message.channel.send(embed)
   }
@@ -32,7 +33,7 @@ client.on("guildCreate", guild => {
   hue.send(guildadd);
 });
 
-client.on("guildCreate", guild => {
+client.on("guildDelete", guild => {
   let hue = client.channels.get("555426672225157132")
   const guildadd = new Discord.RichEmbed()
   .setTitle("Пока, гилд.")
@@ -44,6 +45,83 @@ client.on("guildCreate", guild => {
 
 //
 //
+client.on("message", (message) => {
+  let messageArray = message.content.split(" ");
+  let args = messageArray.slice(1);
+
+  function play(connection, message) {
+      var server = servers[message.guild.id];
+      server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
+      server.queue.shift();
+      server.dispatcher.on("end", function() {
+          if(server.queue[0]) play(connection, message);
+          else connection.disconnect();
+      })
+  }
+var servers = {};
+
+if(message.content.startsWith(`${prefix}play`))
+{
+  if (!args[0]) {
+         message.channel.send("Пожалуйста, предоставьте ссылку.");
+         return
+    }
+
+    if(!message.member.voiceChannel) {
+        message.channel.send("Я думаю, вам стоит зайти в голосовой канал.");
+    }
+
+    if(!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
+    }
+    var server = servers[message.guild.id];
+
+    server.queue.push(args[0]);
+    message.channel.send("Ваша песня находится в очереди.")
+    if(!message.member.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+        play(connection, message);
+    })
+}
+});
+
+client.on("message", (message) => {
+  function play(connection, message) {
+    var server = servers[message.guild.id];
+    server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
+    server.queue.shift();
+    server.dispatcher.on("end", function() {
+        if(server.queue[0]) play(connection, message);
+        else connection.disconnect();
+    })
+}
+  var servers = {};
+
+  if(message.content === `${prefix}skip`)
+  {
+    var server = servers[message.guild.id];
+    if (server.dispatcher) server.dispatcher.end();
+  }
+});
+
+client.on("message", (message) => {
+  function play(connection, message) {
+    var server = servers[message.guild.id];
+    server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
+    server.queue.shift();
+    server.dispatcher.on("end", function() {
+        if(server.queue[0]) play(connection, message);
+        else connection.disconnect();
+    })
+  }
+var servers = {};
+
+if(message.content === `${prefix}stop`)
+{
+  var server = servers[message.guild.id];
+  if(message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
+}
+});
+
 client.on("message", (message) => {
   if(message.content === `${prefix}sinfo`)
   {
@@ -66,9 +144,6 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
-  let messageArray = message.content.split(" ");
-  let args = messageArray.slice(1);
-
   if(message.content.startsWith(`${prefix}userinfo`))
   {
     let member = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]))
@@ -76,11 +151,16 @@ client.on("message", (message) => {
     if (member) argsUser = member.user
     else argsUser = message.author
 
+  const emdonline = client.emojis.find(emoji => emoji.name === "online");
+    const emdoidle = client.emojis.find(emoji => emoji.name === "idle");
+      const emdodnd = client.emojis.find(emoji => emoji.name === "dnd");
+        const emdoffline = client.emojis.find(emoji => emoji.name === "offline");
+
     let statuses = {
-        online: `В сети`,
-        idle: `Не активен`,
-        dnd: `Не беспокоить`,
-        offline: `Не в сети`
+        online: `${emdonline} В сети`,
+        idle: `${emdoidle} Не активен`,
+        dnd: `${emdodnd} Не беспокоить`,
+        offline: `${emdoffline} Не в сети`
     }
     let game
     if (!argsUser.presence.game) game = `Имеет статус \n **${statuses[argsUser.presence.status]}**`
