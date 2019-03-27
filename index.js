@@ -1,4 +1,6 @@
 const Discord = require("discord.js");
+const weather = require("weather-js");
+const strftime = require("strftime");
 const prefix = '%'
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
@@ -11,8 +13,12 @@ client.on("ready", () => {
 client.on("message", (message) => {
   if(message.content === `${prefix}help`)
   {
-    message.channel.send(`**Возможности**\n\n%mute @ping - мут пользователя.\n%kick @ping reason - кик\n%ban @ping reason - ban\n\n**ВСЕ БУДЕТ ДОПОЛНЯТЬСЯ, БОТ В БЕТА-ТЕСТЕ**`)
+    const embed = new Discord.RichEmbed()
+    .setTitle("Команды")
+    .setColor("RANDOM")
+    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков")
 
+    message.channel.send(embed)
   }
 });
 
@@ -26,7 +32,7 @@ client.on("guildCreate", guild => {
   hue.send(guildadd);
 });
 
-client.on("guildDelete", guild => {
+client.on("guildCreate", guild => {
   let hue = client.channels.get("555426672225157132")
   const guildadd = new Discord.RichEmbed()
   .setTitle("Пока, гилд.")
@@ -41,26 +47,70 @@ client.on("guildDelete", guild => {
 client.on("message", (message) => {
   if(message.content === `${prefix}sinfo`)
   {
-    let sicon = message.guild.iconURL;
-    const serverembed = new Discord.RichEmbed()
-        .setDescription(`Сервер: \n ${message.guild.name}`)
-        .setColor("#15f153")
-        .setThumbnail(sicon)
-        .addField('Владелец', message.guild.owner, true)
-        .addField('ID сервера', message.guild.id, true)
-        .addField('Регион', message.guild.region, true)
-        .addField('Участников', `${message.guild.memberCount}`, true)
-        .addField('Каналы',`${message.guild.channels.filter(c => c.type == 'text').size} текстовых\n${message.guild.channels.filter(c => c.type == 'voice').size} голосовых`, true )
-        .addField('AFK Канал',`${message.guild.afkChannel !== null ? `${message.guild.afkChannel}` : 'Нет'}`, true)
-        .addField('Роли', message.guild.roles.size, true)
-        .addField('Эмодзи', message.guild.emojis.size, true)
-        .setFooter('Сервер создан')
-        .setTimestamp(new Date(message.guild.createdTimestamp))
-        .setColor("RANDOM");
-        message.channel.send(serverembed);
+    let embed112 = new Discord.RichEmbed()
+    .setAuthor(`Информация о сервере ${message.guild.name}`,message.guild.iconURL)
+    .addField('Название',message.guild.name,true)
+    .addField('ID',message.guild.id,true)
+    .addField(`Создатель`,message.guild.owner,true)
+    .addField('Тег создателя',message.guild.owner.user.tag,true)
+    .addField('Каналов',`**Всего:** ${message.guild.channels.size} \n :computer:**Категорий:** ${message.guild.channels.filter(c => c.type === "category").size} \n :keyboard:**Текстовых:** ${message.guild.channels.filter(c => c.type === "text").size} \n :microphone2:**Голосовых:** ${message.guild.channels.filter(c => c.type === "voice").size}`,true)
+    .addField('Количество пользователей',`**Всего:** ${message.guild.members.size} \n <:online:558350359815389190> **Онлайн:** ${message.guild.members.filter(s => s.presence.status ===  "online").size} \n <:idle:558350320598515713>**Нет на месте:** ${message.guild.members.filter(s => s.presence.status ===  "idle").size} \n <:offline:558350385870405642>**Оффлайн:** ${message.guild.members.filter(s => s.presence.status === "offline").size}`,true)
+    .addField('Количество ролей',message.guild.roles.size,true)
+    .addField('Регион',message.guild.region,true)
+    .addField('Эмодзи',message.guild.emojis.size,true)
+    .addField('Уровень верификации',message.guild.verificationLevel,true)
+    .addField('Создан:',moment(message.guild.createdAt).fromNow(),true)
+    .setThumbnail(message.guild.iconURL)
+    message.channel.send(embed112)
   }
 });
 
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}userinfo`))
+  {
+    let member = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]))
+    let argsUser
+    if (member) argsUser = member.user
+    else argsUser = message.author
+
+  const emdonline = client.emojis.find(emoji => emoji.name === "online");
+    const emdoidle = client.emojis.find(emoji => emoji.name === "idle");
+      const emdodnd = client.emojis.find(emoji => emoji.name === "dnd");
+        const emdoffline = client.emojis.find(emoji => emoji.name === "offline");
+
+    let statuses = {
+        online: `${emdonline} В сети`,
+        idle: `${emdoidle} Не активен`,
+        dnd: `${emdodnd} Не беспокоить`,
+        offline: `${emdoffline} Не в сети`
+    }
+    let game
+    if (!argsUser.presence.game) game = `Имеет статус \n **${statuses[argsUser.presence.status]}**`
+    else if (argsUser.presence.game.type == 0) game = `Играет в **${argsUser.presence.game.name}**`
+    else if (argsUser.presence.game.type == 1) game = `Стримит [**${argsUser.presence.game.name}**](${argsUser.presence.game.url})`
+    else if (argsUser.presence.game.type == 2) game = `Слушает **${argsUser.presence.game.name}**`
+    else if (argsUser.presence.game.type == 3) game = `Смотрит **${argsUser.presence.game.name}**`
+
+    let day = 1000 * 60 * 60 * 24
+    let date1 = new Date(message.createdTimestamp)
+    let date2 = new Date(argsUser.createdTimestamp)
+    let date3 = new Date(message.guild.member(argsUser).joinedTimestamp)
+    let diff1 = Math.round(Math.abs((date1.getTime() - date2.getTime()) / day))
+    let diff2 = Math.round(Math.abs((date1.getTime() - date3.getTime()) / day))
+
+    let embed = new Discord.RichEmbed()
+        .setTitle(argsUser.username)
+        .setDescription(game)
+        .addField('Дата регистарции', `${strftime('%d.%m.%Y в %H:%M', new Date(argsUser.createdTimestamp))}\n(${diff1} дней назад)`, true)
+        .addField('Покдлючился на сервер', `${strftime('%d.%m.%Y в %H:%M', new Date(message.guild.member(argsUser).joinedTimestamp))}\n(${diff2} дней назад)`, true)
+        .addField('Роли', message.guild.member(argsUser).roles.filter(r => r.id != message.guild.id).map(role => role.name).join(', ') || 'Отсутствуют')
+        .setColor("RANDOM")
+        .setTimestamp()
+        .setThumbnail(argsUser.avatarURL)
+        .setFooter(`ID: ${argsUser.id}`)
+        message.channel.send(embed)
+  }
+});
 
 client.on("message", (message) => {
   let messageArray = message.content.split(" ");
@@ -151,6 +201,71 @@ client.on("message", (message) => {
     message.guild.member(ku).kick(kr);
     message.channel.send("Пользователь успешно кикнут");
   };
+});
+
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}weather`))
+  {
+        let messageArray = message.content.split(" ");
+        let args = messageArray.slice(1);
+
+    weather.find({search: args.join(" "), degreeType: 'C', lang: 'ru-RU'}, function(err, result) {
+          if (result === undefined || result.length === 0) {
+              message.channel.send("Указанное местоположение отсуствует или неопределенное.")
+              return;
+          }
+                var current = result[0].current;
+                var location = result[0].location;
+
+          const embed = new Discord.RichEmbed()
+          .setTitle(`Погода в ${current.observationpoint}`)
+          .setColor("RANDOM")
+          .setDescription(`**${current.skytext}**`)
+          .addField("Временная зона", `UTC${location.timezone}`)
+          .addField('Температура',`${current.temperature} градусов`)
+          .addField('Ощущается как', `${current.feelslike} градусов`)
+          .addField('Ветер', current.winddisplay)
+          .addField('Влажность', `${current.humidity}%`);
+
+          message.channel.send(embed);
+    });
+  };
+});
+
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}callcenter`))
+  {
+    let call = client.channels.get("560481919868076032")
+    let messageArray = message.content.split(" ");
+    let args = messageArray.slice(1);
+    message.channel.send("Вскоре вам напишет разработчик бота.")
+
+    const embed = new Discord.RichEmbed()
+    .setTitle("CallCenter")
+    .setColor("RANDOM")
+    .setDescription(`Автор: ${message.author}\n\nТег: ${message.author.tag}\n\nЗапрос: ${message.content}`);
+
+    call.send(embed);
+
+  };
+});
+
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}snipe`))
+  {
+  let snipe = message.mentions.users.first()
+
+  const embed = new Discord.RichEmbed()
+  .setColor("#9100ce")
+  .setDescription(`${message.author} sniped ${snipe}`)
+
+  const noembed = new Discord.RichEmbed()
+  .setColor("#9100ce")
+  .setDescription(`${message.author} sniped himself`)
+
+  if(snipe) return message.channel.send(embed)
+  if(!snipe) return message.channel.send(noembed)
+  }
 });
 
 client.login(cfg.token);
