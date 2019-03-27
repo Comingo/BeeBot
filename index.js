@@ -76,16 +76,11 @@ client.on("message", (message) => {
     if (member) argsUser = member.user
     else argsUser = message.author
 
-  const emdonline = client.emojis.find(emoji => emoji.name === "online");
-    const emdoidle = client.emojis.find(emoji => emoji.name === "idle");
-      const emdodnd = client.emojis.find(emoji => emoji.name === "dnd");
-        const emdoffline = client.emojis.find(emoji => emoji.name === "offline");
-
     let statuses = {
-        online: `${emdonline} В сети`,
-        idle: `${emdoidle} Не активен`,
-        dnd: `${emdodnd} Не беспокоить`,
-        offline: `${emdoffline} Не в сети`
+        online: `В сети`,
+        idle: `Не активен`,
+        dnd: `Не беспокоить`,
+        offline: `Не в сети`
     }
     let game
     if (!argsUser.presence.game) game = `Имеет статус \n **${statuses[argsUser.presence.status]}**`
