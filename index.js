@@ -16,7 +16,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
-    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков")
+    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n%botinvite - пригласить бота на свой сервер")
 
     message.channel.send(embed)
   }
@@ -145,6 +145,13 @@ client.on("message", (message) => {
       message.reply("недостаточно прав.")
      }
   };
+});
+
+client.on("message", (message) => {
+  if(message.content === `${prefix}botinvite`)
+  {
+    message.channel.send("Я рад, что я нужен вам! = )\nhttps://discordapp.com/api/oauth2/authorize?client_id=555427790711947273&permissions=8&scope=bot")
+  }
 });
 
 client.on("message", (message) => {
