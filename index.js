@@ -66,6 +66,9 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+  let messageArray = message.content.split(" ");
+  let args = messageArray.slice(1);
+
   if(message.content.startsWith(`${prefix}userinfo`))
   {
     let member = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]))
