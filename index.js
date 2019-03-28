@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const weather = require("weather-js");
 const moment = require("moment");
+const math = require('mathjs')
 const strftime = require("strftime");
 const YTDL = require("ytdl-core")
 const prefix = '%'
@@ -18,7 +19,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
-    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n%botinvite - пригласить бота на свой сервер\n%play - включить песню (с Ютуба)\n%stop - остановить игру\n%avatar - отображить аватар пользователя\n%support - сервер Альфред бота\n%poll - голосование.")
+    .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n\nОстальное:\n%calc - посчитать пример\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (с Ютуба)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Альфред бота")
 
     message.channel.send(embed)
   }
@@ -126,6 +127,28 @@ client.on("message", (message) => {
     .setThumbnail(message.guild.iconURL)
     message.channel.send(embed112)
   }
+});
+
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}calc`)){
+    let args = message.content.slice(6).split(' ')
+    if (!args[0]) return message.channel.send('Введите числа для решения');
+    let resp;
+    try
+    {
+      resp = math.eval(args.join(" "));
+    }
+    catch (e)
+    {
+      message.channel.send("Введите действительный пример!");
+      return
+    }
+    const embed = new Discord.RichEmbed()
+    .setColor("RANDOM")
+    .setTitle('Калькулятор')
+    .addField('Вы ввели', `\`\`\`js\n${args.join(' ')}\`\`\``)
+    .addField('Получили ответ', `\`\`\`js\n${resp}\`\`\``);
+    message.channel.send(embed);}
 });
 
 client.on("message", (message) => {
@@ -331,7 +354,6 @@ client.on("message", (message) => {
 client.on("message", (message) => {
   if(message.content.startsWith(`${prefix}callcenter`))
   {
-    if(message.author.bot) return;
     let call = client.channels.get("560481919868076032")
     let messageArray = message.content.split(" ");
     let args = messageArray.slice(1);
@@ -342,7 +364,6 @@ client.on("message", (message) => {
     .setColor("RANDOM")
     .setDescription(`Автор: ${message.author}\n\nТег: ${message.author.tag}\n\nЗапрос: ${message.content}`);
 
-    if(message.author.bot) return;
     call.send(embed);
 
   };
