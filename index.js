@@ -217,6 +217,7 @@ client.on("message", (message) => {
     if(!message || !message.channel || message.channel.type === "dm") return;
     if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("отсутствуют права");
     if(!args[0]) return message.reply("нельзя очистить меньше 1 знака или 0");
+    message.delete(1);
     message.channel.bulkDelete(args[0]).then(() => {
     message.channel.send(`Удалено ${args[0]} сообщение(ий)`).then(msg => msg.delete(2000));
       });
