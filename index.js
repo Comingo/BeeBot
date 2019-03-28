@@ -356,7 +356,7 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
-  if(message.content.startsWith(`${prefix}avatar`)
+  if(message.content.startsWith(`${prefix}avatar`))
   {
      let user = message.mentions.users.first() || message.author;
     const embed = new Discord.RichEmbed()
