@@ -176,7 +176,7 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
-  if(message.content === `${prefix}support)
+  if(message.content === (`${prefix}support`)
   {
     message.channel.send("Здесь вы можете спросить помощь: https://discord.gg/zWGQ7Zt");
   }
@@ -350,11 +350,11 @@ client.on("message", (message) => {
   {
      let user = message.mentions.users.first() || message.author;
     const embed = new Discord.RichEmbed()
-    .setColor('RANDOM') 
+    .setColor('RANDOM')
     .setDescription(`[Аватар ${user.username}](${user.avatarURL})`)
     .setImage(user.avatarURL)
   message.channel.send(embed)
   }
 });
-  
+
 client.login(cfg.token);
