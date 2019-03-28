@@ -18,7 +18,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
-    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n%botinvite - пригласить бота на свой сервер\n%play - включить песню (с Ютуба)\n%stop - остановить игру\n%avatar - отображить аватар пользоавателя\n%poll - голосование.")
+    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n%botinvite - пригласить бота на свой сервер\n%play - включить песню (с Ютуба)\n%stop - остановить игру\n%avatar - отображить аватар пользователя\n%support - сервер Альфред бота.")
 
     message.channel.send(embed)
   }
@@ -85,24 +85,7 @@ if(message.content.startsWith(`${prefix}play`))
 }
 });
 
-client.on("message", (message) => {
-  function play(connection, message) {
-    var server = servers[message.guild.id];
-    server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
-    server.queue.shift();
-    server.dispatcher.on("end", function() {
-        if(server.queue[0]) play(connection, message);
-        else connection.disconnect();
-    })
-}
-  var servers = {};
 
-  if(message.content === `${prefix}skip`)
-  {
-    var server = servers[message.guild.id];
-    if (server.dispatcher) server.dispatcher.end();
-  }
-});
 
 client.on("message", (message) => {
   function play(connection, message) {
@@ -189,6 +172,13 @@ client.on("message", (message) => {
         .setThumbnail(argsUser.avatarURL)
         .setFooter(`ID: ${argsUser.id}`)
         message.channel.send(embed)
+  }
+});
+
+client.on("message", (message) => {
+  if(message.content === `${prefix}support)
+  {
+    message.channel.send("Здесь вы можете спросить помощь: https://discord.gg/zWGQ7Zt");
   }
 });
 
