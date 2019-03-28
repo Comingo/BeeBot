@@ -176,7 +176,7 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
-  if(message.content === (`${prefix}support`)
+  if(message.content === `${prefix}support`)
   {
     message.channel.send("Здесь вы можете спросить помощь: https://discord.gg/zWGQ7Zt");
   }
