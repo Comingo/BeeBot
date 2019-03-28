@@ -152,8 +152,12 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
   if(message.content.startsWith(`${prefix}userinfo`))
   {
+      let messageArray = message.content.split(" ");
+      let args = messageArray.slice(1);
+
     let member = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]))
     let argsUser
     if (member) argsUser = member.user
@@ -183,7 +187,7 @@ client.on("message", (message) => {
         .setTitle(argsUser.username)
         .setDescription(game)
         .addField('Дата регистарции', `${strftime('%d.%m.%Y в %H:%M', new Date(argsUser.createdTimestamp))}\n(${diff1} дней назад)`, true)
-        .addField('Покдлючился на сервер', `${strftime('%d.%m.%Y в %H:%M', new Date(message.guild.member(argsUser).joinedTimestamp))}\n(${diff2} дней назад)`, true)
+        .addField('Подключился на сервер', `${strftime('%d.%m.%Y в %H:%M', new Date(message.guild.member(argsUser).joinedTimestamp))}\n(${diff2} дней назад)`, true)
         .addField('Роли', message.guild.member(argsUser).roles.filter(r => r.id != message.guild.id).map(role => role.name).join(', ') || 'Отсутствуют')
         .setColor("RANDOM")
         .setTimestamp()
