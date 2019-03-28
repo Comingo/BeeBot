@@ -331,6 +331,7 @@ client.on("message", (message) => {
 client.on("message", (message) => {
   if(message.content.startsWith(`${prefix}callcenter`))
   {
+    if(message.author.bot) return;
     let call = client.channels.get("560481919868076032")
     let messageArray = message.content.split(" ");
     let args = messageArray.slice(1);
@@ -341,6 +342,7 @@ client.on("message", (message) => {
     .setColor("RANDOM")
     .setDescription(`Автор: ${message.author}\n\nТег: ${message.author.tag}\n\nЗапрос: ${message.content}`);
 
+    if(message.author.bot) return;
     call.send(embed);
 
   };
