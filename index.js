@@ -357,8 +357,6 @@ client.on("message", (message) => {
 client.on('message',(message) =>{
 if(message.content.startsWith(prefix + 'avatar')){
 let user = message.mentions.users.first() || message.author;
-
-  // Form Embed
   const embed = new Discord.RichEmbed()
     .setColor('RANDOM') 
     .setDescription(`[Аватар ${user.username}](${user.avatarURL})`)
