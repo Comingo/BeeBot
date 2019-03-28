@@ -18,7 +18,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
-    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n%botinvite - пригласить бота на свой сервер\n%play - включить песню (с Ютуба)\n%stop - остановить игру\n%avatar - отображить аватар пользователя\n%support - сервер Альфред бота.")
+    .setDescription("Все команды бота.\n\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n%botinvite - пригласить бота на свой сервер\n%play - включить песню (с Ютуба)\n%stop - остановить игру\n%avatar - отображить аватар пользователя\n%support - сервер Альфред бота\n%poll - голосование.")
 
     message.channel.send(embed)
   }
@@ -223,6 +223,25 @@ client.on("message", (message) => {
     message.channel.send("Я рад, что я нужен вам! = )\nhttps://discordapp.com/api/oauth2/authorize?client_id=555427790711947273&permissions=8&scope=bot")
   }
 });
+
+client.on('message',async(message) =>{
+  let messageArray = message.content.split(" ");
+  let args = messageArray.slice(1);
+if(message.content.startsWith(`${prefix}poll`))
+  {
+  message.delete();
+    if (!args) return message.reply("Вы должны указать вопрос голосования!")
+    if (!message.content.includes("?")) return message.reply("Добавьте `?` в конце,чтобы начать голосование")
+    if (args < 3) return message.reply("голосование должно содержать как минимум 3 символа. (пробел считается.)")
+  message.channel.send(`${message.author.username} начал голосование`);
+    const pollTopic = new Discord.RichEmbed()
+    .setTitle("Голосование")
+    .setDescription(`${args.join(" ")}`)
+    .setColor("#5DDAEE")
+    .setFooter(`Голосование создано ${message.author.tag}`);
+  await message.channel.send(pollTopic).then(embedMessage => { embedMessage.react('👍').then(r => { embedMessage.react('👎') }).catch(error => { console.log(error) }) }).catch(error => { console.log(error) });
+  }
+})
 
 client.on("message", (message) => {
   let messageArray = message.content.split(" ");
