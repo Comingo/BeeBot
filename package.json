@@ -7,6 +7,7 @@
     "discord.js": "^11.4.2",
     "discord.js-music": "^2.1.0",
     "fs": "^0.0.1-security",
+    "moment": "^2.24.0",
     "opusscript": "0.0.6",
     "strftime": "^0.10.0",
     "weather-js": "^2.0.0",

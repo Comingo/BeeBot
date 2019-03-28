@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const weather = require("weather-js");
+const moment = require("moment");
 const strftime = require("strftime");
 const YTDL = require("ytdl-core")
 const prefix = '%'
@@ -127,12 +128,13 @@ client.on("message", (message) => {
   {
     let embed112 = new Discord.RichEmbed()
     .setAuthor(`Информация о сервере ${message.guild.name}`,message.guild.iconURL)
+    .setColor("RANDOM")
     .addField('Название',message.guild.name,true)
     .addField('ID',message.guild.id,true)
     .addField(`Создатель`,message.guild.owner,true)
     .addField('Тег создателя',message.guild.owner.user.tag,true)
     .addField('Каналов',`**Всего:** ${message.guild.channels.size} \n :computer:**Категорий:** ${message.guild.channels.filter(c => c.type === "category").size} \n :keyboard:**Текстовых:** ${message.guild.channels.filter(c => c.type === "text").size} \n :microphone2:**Голосовых:** ${message.guild.channels.filter(c => c.type === "voice").size}`,true)
-    .addField('Количество пользователей',`**Всего:** ${message.guild.members.size} \n <:online:558350359815389190> **Онлайн:** ${message.guild.members.filter(s => s.presence.status ===  "online").size} \n <:idle:558350320598515713>**Нет на месте:** ${message.guild.members.filter(s => s.presence.status ===  "idle").size} \n <:offline:558350385870405642>**Оффлайн:** ${message.guild.members.filter(s => s.presence.status === "offline").size}`,true)
+    .addField('Количество пользователей',`**Всего:** ${message.guild.members.size} \n **Онлайн:** ${message.guild.members.filter(s => s.presence.status ===  "online").size} \n **Нет на месте:** ${message.guild.members.filter(s => s.presence.status ===  "idle").size} \n **Оффлайн:** ${message.guild.members.filter(s => s.presence.status === "offline").size}`,true)
     .addField('Количество ролей',message.guild.roles.size,true)
     .addField('Регион',message.guild.region,true)
     .addField('Эмодзи',message.guild.emojis.size,true)
