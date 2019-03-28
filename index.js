@@ -64,7 +64,7 @@ var servers = {};
 
 if(message.content.startsWith(`${prefix}play`))
 {
-  if(message.type === "dm") return;
+  if(message.сhannel.type === "dm") return;
   if (!args[0]) {
          message.channel.send("Пожалуйста, предоставьте ссылку.");
          return
@@ -103,7 +103,7 @@ var servers = {};
 
 if(message.content === `${prefix}stop`)
 {
-  if(message.type === "dm") return;
+  if(message.сhannel.type === "dm") return;
   var server = servers[message.guild.id];
   if(message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
 }
@@ -112,7 +112,7 @@ if(message.content === `${prefix}stop`)
 client.on("message", (message) => {
   if(message.content === `${prefix}sinfo`)
   {
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
     let embed112 = new Discord.RichEmbed()
     .setAuthor(`Информация о сервере ${message.guild.name}`,message.guild.iconURL)
     .setColor("RANDOM")
@@ -128,7 +128,7 @@ client.on("message", (message) => {
     .addField('Уровень верификации',message.guild.verificationLevel,true)
     .addField('Создан:',moment(message.guild.createdAt).fromNow(),true)
     .setThumbnail(message.guild.iconURL);
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
     message.channel.send(embed112)
   }
 });
@@ -159,7 +159,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}userinfo`))
   {
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
       let messageArray = message.content.split(" ");
       let args = messageArray.slice(1);
 
@@ -215,7 +215,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}prune`))
   {
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
     if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("отсутствуют права");
     if(!args[0]) return message.reply("нельзя очистить меньше 1 знака или 0");
     message.channel.bulkDelete(args[0]).then(() => {
@@ -227,7 +227,7 @@ client.on("message", (message) => {
 client.on("message", (message) => {
   if(message.content.startsWith(`${prefix}mute`))
   {
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
     let mute = message.guild.roles.find(role => role.name === "AlfredMute");
     let m = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
     if(message.member.hasPermissions("MANAGE_MESSAGES"))
@@ -258,7 +258,7 @@ client.on('message',async(message) =>{
   let args = messageArray.slice(1);
 if(message.content.startsWith(`${prefix}poll`))
   {
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
   message.delete();
     if (!args) return message.reply("Вы должны указать вопрос голосования!")
     if (!message.content.includes("?")) return message.reply("Добавьте `?` в конце,чтобы начать голосование")
@@ -279,7 +279,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}ban`))
   {
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
     let bu = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
 
     if(!bu) return message.channel.send(`Пользователь не найден.`);
@@ -313,7 +313,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}kick`))
   {
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
     let ku = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
 
     if(!ku) return message.channel.send(`Пользователь не найден.`);
@@ -399,7 +399,7 @@ client.on("message", (message) => {
 client.on("message", (message) => {
   if(message.content.startsWith(`${prefix}avatar`))
   {
-    if(message.type === "dm") return;
+    if(message.сhannel.type === "dm") return;
      let user = message.mentions.users.first() || message.author;
     const embed = new Discord.RichEmbed()
     .setColor('RANDOM')
