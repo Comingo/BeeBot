@@ -354,36 +354,15 @@ client.on("message", (message) => {
   if(!snipe) return message.channel.send(noembed)
   }
 });
-client.on('message',(message) =>{
-if(message.content.startsWith(prefix + 'avatar')){
-let user = message.mentions.users.first() || message.author;
-  const embed = new Discord.RichEmbed()
+
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}avatar`)
+     let user = message.mentions.users.first() || message.author;
+    const embed = new Discord.RichEmbed()
     .setColor('RANDOM') 
     .setDescription(`[Аватар ${user.username}](${user.avatarURL})`)
     .setImage(user.avatarURL)
   message.channel.send(embed)
+});
   
- }
-  if(message.content.startsWith(prefix + 'poll')){
-let args = message.content.split(" ").slice(1);
-    message.delete();
-  if (!args) return message.reply("Вы не указали варианты ответа!")
-  if (!message.content.includes("?")) return message.reply("Добавьте `?` в конце для начала голосования!")
-  message.channel.send(`${message.author.username} начал голосование.Поставьте реакцию на следющее сообщение для голосования!`);
-  const pollTopic = new Discord.RichEmbed()
-    .setTitle("Голосование")
-    .setDescription(`${args.join(" ")}`)
-    .setColor("#5DDAEE")
-    .setFooter(`Голосование создано: ${message.author.tag}`);
-  await message.channel.send(pollTopic).then(embedMessage => {
-    embedMessage.react('👍').then(r => {
-      embedMessage.react('👎')
-    }).catch(error => {
-      console.log(error)
-    })
-  }).catch(error => {
-    console.log(error)
-  });
-    }
-  })
 client.login(cfg.token);
