@@ -357,12 +357,14 @@ client.on("message", (message) => {
 
 client.on("message", (message) => {
   if(message.content.startsWith(`${prefix}avatar`)
+  {
      let user = message.mentions.users.first() || message.author;
     const embed = new Discord.RichEmbed()
     .setColor('RANDOM') 
     .setDescription(`[Аватар ${user.username}](${user.avatarURL})`)
     .setImage(user.avatarURL)
   message.channel.send(embed)
+  }
 });
   
 client.login(cfg.token);
