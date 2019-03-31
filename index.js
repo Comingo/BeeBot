@@ -10,7 +10,9 @@ const cfg = require("./data/config.js");
 const client = new Discord.Client();
 
 client.on("ready", () => {
-  client.user.setActivity(`${client.guilds.size} серверов || %help`, {type: "WATCHING"})
+  var activ = setInterval(function() {
+  client.user.setActivity(`${client.guilds.size} серверов || %help`, {type: "WATCHING"});
+   }, 5000);
 });
 
 client.on("message", (message) => {
