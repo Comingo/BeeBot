@@ -373,7 +373,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("CallCenter")
     .setColor("RANDOM")
-    .setDescription(`Автор: ${message.author}\n\nГилд: message.guild.name\n\nТег: ${message.author.tag}\n\nЗапрос: ${message.content}`);
+    .setDescription(`Автор: ${message.author}\n\nГилд: ${message.guild.name} \n\nТег: ${message.author.tag}\n\nЗапрос: ${message.content}`);
 
     call.send(embed);
 
