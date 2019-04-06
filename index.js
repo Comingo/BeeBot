@@ -129,15 +129,16 @@ if(message.content.startsWith(`${prefix}play`))
 
       if ( err ) throw err
 
-      const videos = r.videos
+      const videos = res.videos.slice(0,1)
+           for(var i in videos)
       const playlists = r.playlists
       const accounts = r.accounts
 
-      const firstResult = videos[0, 1]
+
 
       function play(connection, message) {
           var server = servers[message.guild.id];
-          server.dispatcher = connection.playStream(YTDL(`https://youtube.com${firstResult.url}`, {filter: "audioonly"}));
+          server.dispatcher = connection.playStream(YTDL(`https://youtube.com${videos[i].url}`, {filter: "audioonly"}));
           server.queue.shift();
           server.dispatcher.on("end", function() {
               if(server.queue[0]) play(connection, message);
