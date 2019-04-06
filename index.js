@@ -1,9 +1,11 @@
 const Discord = require("discord.js");
 const weather = require("weather-js");
 const moment = require("moment");
+const request = require("request")
 const math = require('mathjs')
 const strftime = require("strftime");
 const YTDL = require("ytdl-core")
+const ytSearch = require("yt-search")
 const prefix = '%'
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
@@ -21,7 +23,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
-    .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n\nОстальное:\n%calc - посчитать пример\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (с Ютуба)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Альфред бота")
+    .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.\n\nОстальное:\n%calc - посчитать пример\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (просто напишите название)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Альфред бота")
 
     message.channel.send(embed)
   }
@@ -49,7 +51,8 @@ client.on("guildDelete", guild => {
 
 //
 //
-client.on("message", (message) => {
+
+/*client.on("message", (message) => {
   let messageArray = message.content.split(" ");
   let args = messageArray.slice(1);
 
@@ -86,6 +89,69 @@ if(message.content.startsWith(`${prefix}play`))
     if(!message.member.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
         play(connection, message);
     })
+}
+});*/
+
+client.on("message", (message) => {
+  let messageArray = message.content.split(" ");
+  let args = messageArray.slice(1);
+
+  function play(connection, message) {
+      var server = servers[message.guild.id];
+      server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
+      server.queue.shift();
+      server.dispatcher.on("end", function() {
+          if(server.queue[0]) play(connection, message);
+          else connection.disconnect();
+      })
+  }
+var servers = {};
+
+if(message.content.startsWith(`${prefix}playtest`))
+{
+  if(!message || !message.channel || message.channel.type === "dm") return;
+  if (!args[0]) {
+         message.channel.send("Пожалуйста, скажите название видео.");
+         return
+    }
+
+    if(!message.member.voiceChannel) {
+        message.channel.send("Я думаю, вам стоит зайти в голосовой канал.");
+    }
+
+    if(!servers[message.guild.id]) servers[message.guild.id] = {
+        queue: []
+    }
+    var server = servers[message.guild.id];
+
+    message.channel.send("Ваша песня находится в очереди.")
+    ytSearch(args[0], function(err, r) {
+
+      if ( err ) throw err
+
+      const videos = r.videos
+      const playlists = r.playlists
+      const accounts = r.accounts
+
+      const firstResult = videos[ 0 ]
+
+      function play(connection, message) {
+          var server = servers[message.guild.id];
+          server.dispatcher = connection.playStream(YTDL(`https://youtube.com${firstResult.url}`, {filter: "audioonly"}));
+          server.queue.shift();
+          server.dispatcher.on("end", function() {
+              if(server.queue[0]) play(connection, message);
+              else connection.disconnect();
+          })
+      }
+
+      server.queue.push(firstResult.url);
+      if(!message.member.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+          play(connection, message);
+      })
+
+    });
+
 }
 });
 
@@ -408,6 +474,51 @@ client.on("message", (message) => {
     .setDescription(`[Аватар ${user.username}](${user.avatarURL})`)
     .setImage(user.avatarURL)
   message.channel.send(embed)
+  }
+});
+
+client.on("message", (message) => {
+  let messageArray = message.content.split(" ");
+  let args = messageArray.slice(1);
+
+  if(message.content.startsWith(`${prefix}unban`))
+  {
+    if(!message || !message.channel || message.channel.type === "dm") return;
+    let user = args[0]
+    if(!user) return message.reply("укажите ID пользователя.")
+
+    if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("У Вас нет прав администратора");
+
+    message.guild.unban(user);
+
+    let banEmbed = new Discord.RichEmbed()
+    .setDescription("~Влетел~")
+    .setColor("RANDOM")
+    .setTimestamp()
+    .addField("Разбанен", `Пользователь <@${user}> с ID: ${user}`)
+    .addField("Разбанен юзером", `<@${message.author.id}> с ID ${message.author.id}`)
+    .addField("Разбанен через канал", message.channel)
+    .setFooter("Время");
+
+    message.channel.send(banEmbed);
+  };
+});
+
+client.on("message", (message) => {
+  if(message.content === `${prefix}pron`)
+  {
+    if(!message.channel.nsfw) return message.reply("у канала нет флага NSFW");
+    request('https://nekobot.xyz/api/image?type=pgif', function (error, response, body) {
+     let resultofpron = JSON.parse(body);
+
+     let embed = new Discord.RichEmbed()
+      .setTitle("let's fapp")
+      .setColor("RANDOM")
+      .setImage(resultofpron['message'])
+      .setTimestamp();
+
+    message.channel.send(embed)
+    });
   }
 });
 
