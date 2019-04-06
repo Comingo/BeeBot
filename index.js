@@ -107,7 +107,7 @@ client.on("message", (message) => {
   }
 var servers = {};
 
-if(message.content.startsWith(`${prefix}playtest`))
+if(message.content.startsWith(`${prefix}play`))
 {
   if(!message || !message.channel || message.channel.type === "dm") return;
   if (!args[0]) {
@@ -133,7 +133,7 @@ if(message.content.startsWith(`${prefix}playtest`))
       const playlists = r.playlists
       const accounts = r.accounts
 
-      const firstResult = videos[ 0 ]
+      const firstResult = videos[0, 1]
 
       function play(connection, message) {
           var server = servers[message.guild.id];
@@ -507,6 +507,7 @@ client.on("message", (message) => {
 client.on("message", (message) => {
   if(message.content === `${prefix}pron`)
   {
+    if(!message || !message.channel || message.channel.type === "dm") return;
     if(!message.channel.nsfw) return message.reply("у канала нет флага NSFW");
     request('https://nekobot.xyz/api/image?type=pgif', function (error, response, body) {
      let resultofpron = JSON.parse(body);
