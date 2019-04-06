@@ -129,11 +129,10 @@ if(message.content.startsWith(`${prefix}play`))
 
       if ( err ) throw err
 
-      const videos = res.videos.slice(0,1)
-           for(var i in videos)
       const playlists = r.playlists
       const accounts = r.accounts
-
+      const videos = res.videos.slice(0,1)
+      for(var i in videos)
 
 
       function play(connection, message) {
