@@ -116,6 +116,7 @@ if(message.content.startsWith(`${prefix}play`))
 
     if(!message.member.voiceChannel) {
         message.channel.send("Я думаю, вам стоит зайти в голосовой канал.");
+        return;
     }
 
     if(!servers[message.guild.id]) servers[message.guild.id] = {
