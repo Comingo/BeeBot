@@ -93,8 +93,7 @@ if(message.content.startsWith(`${prefix}play`))
 });*/
 
 client.on("message", (message) => {
-  let messageArray = message.content.split(" ");
-  let args = messageArray.slice(1);
+let args = message.content.slice(prefix.length).trim().split(/ +/g)
 
   function play(connection, message) {
       var server = servers[message.guild.id];
@@ -124,20 +123,22 @@ if(message.content.startsWith(`${prefix}play`))
     }
     var server = servers[message.guild.id];
 
-    message.channel.send("Ваша песня находится в очереди.")
-    ytSearch(args[0], function(err, r) {
+
+    ytSearch(args.join(' '), function(err, r) {
+      console.log(args)
 
       if ( err ) throw err
-
+      const videos = r.videos
       const playlists = r.playlists
       const accounts = r.accounts
-      const videos = res.videos.slice(0,1)
-      for(var i in videos)
 
+      const firstResult = videos[0]
+
+    message.channel.send(`Ваша песня находится в очереди. Вот, что мы нашли: :notes: ${firstResult.title}\n\nПримечание: если вы решили поставить другую песню, напишите %stop, а уже после %play. Queue не работает : )`)
 
       function play(connection, message) {
           var server = servers[message.guild.id];
-          server.dispatcher = connection.playStream(YTDL(`https://youtube.com${videos[i].url}`, {filter: "audioonly"}));
+          server.dispatcher = connection.playStream(YTDL(`https://youtube.com${firstResult.url}`, {filter: "audioonly"}));
           server.queue.shift();
           server.dispatcher.on("end", function() {
               if(server.queue[0]) play(connection, message);
@@ -507,7 +508,6 @@ client.on("message", (message) => {
 client.on("message", (message) => {
   if(message.content === `${prefix}pron`)
   {
-    if(!message || !message.channel || message.channel.type === "dm") return;
     if(!message.channel.nsfw) return message.reply("у канала нет флага NSFW");
     request('https://nekobot.xyz/api/image?type=pgif', function (error, response, body) {
      let resultofpron = JSON.parse(body);
