@@ -23,7 +23,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
-    .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.\n\nОстальное:\n%calc - посчитать пример\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (просто напишите название)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Альфред бота")
+    .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.\n\nОстальное:\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (просто напишите название)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Альфред бота")
 
     message.channel.send(embed)
   }
@@ -197,28 +197,6 @@ client.on("message", (message) => {
     .setThumbnail(message.guild.iconURL);
     message.channel.send(embed112)
   }
-});
-
-client.on("message", (message) => {
-  if(message.content.startsWith(`${prefix}calc`)){
-    let args = message.content.slice(6).split(' ')
-    if (!args[0]) return message.channel.send('Введите числа для решения');
-    let resp;
-    try
-    {
-      resp = math.eval(args.join(" "));
-    }
-    catch (e)
-    {
-      message.channel.send("Введите действительный пример!");
-      return
-    }
-    const embed = new Discord.RichEmbed()
-    .setColor("RANDOM")
-    .setTitle('Калькулятор')
-    .addField('Вы ввели', `\`\`\`js\n${args.join(' ')}\`\`\``)
-    .addField('Получили ответ', `\`\`\`js\n${resp}\`\`\``);
-    message.channel.send(embed);}
 });
 
 client.on("message", (message) => {
@@ -518,6 +496,22 @@ client.on("message", (message) => {
 
     message.channel.send(embed)
     });
+  }
+});
+
+client.on('message', (message) => {
+  let ch = client.channels.get("564364090244595713")
+  if(message.content.startsWith(`${prefix}`))
+  {
+    const embed = new Discord.RichEmbed()
+    .setTitle("LOGS")
+    .setColor("RANDOM")
+    .setTimeStamp()
+    .addField("Имя гилда", message.guild)
+    .addField("Имя пользователя", message.author.username)
+    .addField("Контент", message.content)
+    .setFooter("Время");
+    ch.send(embed)  
   }
 });
 
