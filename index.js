@@ -10,6 +10,13 @@ const prefix = '%'
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
 const client = new Discord.Client();
+  var bl = [ ]
+
+
+client.on('message', (message) => {
+
+});
+
 
 client.on("ready", () => {
   var activ = setInterval(function() {
@@ -20,13 +27,25 @@ client.on("ready", () => {
 client.on("message", (message) => {
   if(message.content === `${prefix}help`)
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
     .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.\n\nОстальное:\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (просто напишите название)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Альфред бота")
 
     message.channel.send(embed)
-  }
+    }
 });
 
 client.on("guildCreate", guild => {
@@ -93,6 +112,8 @@ if(message.content.startsWith(`${prefix}play`))
 });*/
 
 client.on("message", (message) => {
+
+
 let args = message.content.slice(prefix.length).trim().split(/ +/g)
 
   function play(connection, message) {
@@ -107,6 +128,18 @@ var servers = {};
 
 if(message.content.startsWith(`${prefix}play`))
 {
+  if(bl.includes(message.author.id))
+  {
+    const embed = new Discord.RichEmbed()
+    .setTitle("Блокировка :x:")
+    .setColor("#9100ce")
+    .setDescription("Вы были забанены навсегда в боте Alfred.")
+    .setTimestamp();
+
+    message.channel.send(embed)
+    return;
+  }
+
   if(!message || !message.channel || message.channel.type === "dm") return;
   if (!args[0]) {
          message.channel.send("Пожалуйста, скажите название видео.");
@@ -157,6 +190,7 @@ if(message.content.startsWith(`${prefix}play`))
 
 
 client.on("message", (message) => {
+
   function play(connection, message) {
     var server = servers[message.guild.id];
     server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
@@ -170,6 +204,18 @@ var servers = {};
 
 if(message.content === `${prefix}stop`)
 {
+  if(bl.includes(message.author.id))
+  {
+    const embed = new Discord.RichEmbed()
+    .setTitle("Блокировка :x:")
+    .setColor("#9100ce")
+    .setDescription("Вы были забанены навсегда в боте Alfred.")
+    .setTimestamp();
+
+    message.channel.send(embed)
+    return;
+  }
+
   if(!message || !message.channel || message.channel.type === "dm") return;
   var server = servers[message.guild.id];
   if(message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
@@ -177,8 +223,21 @@ if(message.content === `${prefix}stop`)
 });
 
 client.on("message", (message) => {
+
   if(message.content === `${prefix}sinfo`)
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
     let embed112 = new Discord.RichEmbed()
     .setAuthor(`Информация о сервере ${message.guild.name}`,message.guild.iconURL)
@@ -203,6 +262,18 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}userinfo`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
       let messageArray = message.content.split(" ");
       let args = messageArray.slice(1);
@@ -254,11 +325,24 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
   let messageArray = message.content.split(" ");
   let args = messageArray.slice(1);
 
   if(message.content.startsWith(`${prefix}prune`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
     if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("отсутствуют права");
     if(!args[0]) return message.reply("нельзя очистить меньше 1 знака или 0");
@@ -270,8 +354,21 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
   if(message.content.startsWith(`${prefix}mute`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
     let mute = message.guild.roles.find(role => role.name === "AlfredMute");
     let m = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
@@ -299,10 +396,24 @@ client.on("message", (message) => {
 });
 
 client.on('message',async(message) =>{
+
+
   let messageArray = message.content.split(" ");
   let args = messageArray.slice(1);
 if(message.content.startsWith(`${prefix}poll`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
   message.delete();
     if (!args) return message.reply("Вы должны указать вопрос голосования!")
@@ -319,11 +430,24 @@ if(message.content.startsWith(`${prefix}poll`))
 })
 
 client.on("message", (message) => {
+
   let messageArray = message.content.split(" ");
   let args = messageArray.slice(1);
 
   if(message.content.startsWith(`${prefix}ban`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
     let bu = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
 
@@ -353,11 +477,24 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
   let messageArray = message.content.split(" ");
   let args = messageArray.slice(1);
 
   if(message.content.startsWith(`${prefix}kick`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
     let ku = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
 
@@ -377,8 +514,21 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
   if(message.content.startsWith(`${prefix}weather`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
         let messageArray = message.content.split(" ");
         let args = messageArray.slice(1);
 
@@ -406,8 +556,22 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
+
   if(message.content.startsWith(`${prefix}callcenter`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     let call = client.channels.get("560481919868076032")
     let messageArray = message.content.split(" ");
     let args = messageArray.slice(1);
@@ -424,8 +588,22 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
+
   if(message.content.startsWith(`${prefix}snipe`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
   let snipe = message.mentions.users.first()
 
   const embed = new Discord.RichEmbed()
@@ -442,8 +620,21 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
   if(message.content.startsWith(`${prefix}avatar`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
      let user = message.mentions.users.first() || message.author;
     const embed = new Discord.RichEmbed()
@@ -455,11 +646,25 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
+
   let messageArray = message.content.split(" ");
   let args = messageArray.slice(1);
 
   if(message.content.startsWith(`${prefix}unban`))
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message || !message.channel || message.channel.type === "dm") return;
     let user = args[0]
     if(!user) return message.reply("укажите ID пользователя.")
@@ -482,8 +687,21 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+
   if(message.content === `${prefix}pron`)
   {
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
+
     if(!message.channel.nsfw) return message.reply("у канала нет флага NSFW");
     request('https://nekobot.xyz/api/image?type=pgif', function (error, response, body) {
      let resultofpron = JSON.parse(body);
@@ -500,6 +718,7 @@ client.on("message", (message) => {
 });
 
 client.on('message', (message) => {
+
   let ch = client.channels.get("564364090244595713")
   if(message.content.startsWith(`${prefix}`))
   {
