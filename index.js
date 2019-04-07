@@ -506,12 +506,12 @@ client.on('message', (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("LOGS")
     .setColor("RANDOM")
-    .setTimeStamp()
+    .setTimestamp()
     .addField("Имя гилда", message.guild)
     .addField("Имя пользователя", message.author.username)
     .addField("Контент", message.content)
     .setFooter("Время");
-    ch.send(embed)  
+    ch.send(embed)
   }
 });
 
