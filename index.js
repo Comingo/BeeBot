@@ -98,9 +98,8 @@ let args = message.content.slice(prefix.length).trim().split(/ +/g)
   function play(connection, message) {
       var server = servers[message.guild.id];
       server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
-      server.queue.shift();
       server.dispatcher.on("end", function() {
-          if(server.queue[0]) play(connection, message);
+          if(server.queue[0]) play(connection, message)
           else connection.disconnect();
       })
   }
@@ -135,25 +134,23 @@ if(message.content.startsWith(`${prefix}play`))
 
       const firstResult = videos[0]
 
-    message.channel.send(`Ваша песня находится в очереди. Вот, что мы нашли: :notes: ${firstResult.title}\n\nПримечание: если вы решили поставить другую песню, напишите %stop, а уже после %play. Queue не работает : )`)
+    message.channel.send(`Ваша песня находится в очереди. Вот, что мы нашли: :notes: ${firstResult.title}\n\n`)
 
       function play(connection, message) {
           var server = servers[message.guild.id];
           server.dispatcher = connection.playStream(YTDL(`https://youtube.com${firstResult.url}`, {filter: "audioonly"}));
-          server.queue.shift();
-          server.dispatcher.on("end", function() {
-              if(server.queue[0]) play(connection, message);
-              else connection.disconnect();
-          })
+          if(server.dispatcher.end) server.queue.push(firstResult.url);
       }
 
+      server.queue.shift();
       server.queue.push(firstResult.url);
-      if(!message.member.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
-          play(connection, message);
-      })
-
+      if(message.member.voiceConnection) return function(connection) {
+        play(connection, message);
+      }
+      if(!message.member.voiceConnection) return message.member.voiceChannel.join().then(function(connection) {
+           play(connection, message);
+          })
     });
-
 }
 });
 
@@ -165,7 +162,7 @@ client.on("message", (message) => {
     server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
     server.queue.shift();
     server.dispatcher.on("end", function() {
-        if(server.queue[0]) play(connection, message);
+        if(server.queue[0]) play(connection, message)
         else connection.disconnect();
     })
   }
@@ -260,7 +257,7 @@ client.on("message", (message) => {
     let embed = new Discord.RichEmbed()
         .setTitle(argsUser.username)
         .setDescription(game)
-        .addField('Дата регистарции', `${strftime('%d.%m.%Y в %H:%M', new Date(argsUser.createdTimestamp))}\n(${diff1} дней назад)`, true)
+        .addField('Дата регистрации', `${strftime('%d.%m.%Y в %H:%M', new Date(argsUser.createdTimestamp))}\n(${diff1} дней назад)`, true)
         .addField('Подключился на сервер', `${strftime('%d.%m.%Y в %H:%M', new Date(message.guild.member(argsUser).joinedTimestamp))}\n(${diff2} дней назад)`, true)
         .addField('Роли', message.guild.member(argsUser).roles.filter(r => r.id != message.guild.id).map(role => role.name).join(', ') || 'Отсутствуют')
         .setColor("RANDOM")
