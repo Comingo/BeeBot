@@ -10,7 +10,7 @@ const prefix = '%'
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
 const client = new Discord.Client();
-  var bl = [ ]
+  var bl = ['411277475335897088'] 
 
 
 client.on('message', (message) => {
