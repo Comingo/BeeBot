@@ -22,8 +22,8 @@ client.on('message', (message) => {
 
 client.on("ready", () => {
   var activ = setInterval(function() {
-  client.user.setActivity(`${client.guilds.size} серверов || %help`, {type: "WATCHING"});
-   }, 5000);
+client.user.setActivity(`${client.guilds.size} серверов`, {type: "STREAMING", url: "https://www.twitch.tv/thex49"})
+  }, 5000);
 });
 
 client.on("message", (message) => {
