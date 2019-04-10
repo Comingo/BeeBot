@@ -22,7 +22,7 @@ client.on('message', (message) => {
 
 client.on("ready", () => {
   var activ = setInterval(function() {
-client.user.setActivity(`${client.guilds.size} серверов`, {type: "STREAMING", url: "https://www.twitch.tv/thex49"})
+client.user.setActivity(`${client.guilds.size} серверов || %help`, {type: "STREAMING", url: "https://www.twitch.tv/thex49"})
   }, 5000);
 });
 
@@ -34,7 +34,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -135,7 +135,7 @@ if(message.content.startsWith(`${prefix}play`))
     const embed = new Discord.RichEmbed()
     .setTitle("Блокировка :x:")
     .setColor("#9100ce")
-    .setDescription("Вы были забанены навсегда в боте Alfred.")
+    .setDescription("Вы были забанены навсегда в боте Bee.")
     .setTimestamp();
 
     message.channel.send(embed)
@@ -211,7 +211,7 @@ if(message.content === `${prefix}stop`)
     const embed = new Discord.RichEmbed()
     .setTitle("Блокировка :x:")
     .setColor("#9100ce")
-    .setDescription("Вы были забанены навсегда в боте Alfred.")
+    .setDescription("Вы были забанены навсегда в боте Bee.")
     .setTimestamp();
 
     message.channel.send(embed)
@@ -233,7 +233,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -269,7 +269,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -338,7 +338,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -364,7 +364,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -409,7 +409,7 @@ if(message.content.startsWith(`${prefix}poll`))
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -443,7 +443,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -490,7 +490,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -524,7 +524,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -567,7 +567,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -599,7 +599,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee. ")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -630,7 +630,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -660,7 +660,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
@@ -697,7 +697,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Блокировка :x:")
       .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Alfred.")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
       .setTimestamp();
 
       message.channel.send(embed)
