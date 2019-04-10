@@ -12,23 +12,14 @@ const prefix = '%'
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
 const client = new Discord.Client();
-  var bl = ['411277475335897088', '333999936821526528'] 
+  var bl = ['411277475335897088'] 
 
 
-class blacklist {
-  embedban() {
-    const embed = new Discord.RichEmbed()
-    .setTitle("Блокировка :x:")
-    .setColor("#9100ce")
-    .setDescription("Вы были забанены навсегда в боте Bee.")
-    .setTimestamp();
+client.on('message', (message) => {
 
-    message.channel.send(embed)
-    return;
-   } 
-} 
-  
- 
+});
+
+
 client.on("ready", () => {
   var activ = setInterval(function() {
 client.user.setActivity(`${client.guilds.size} серверов || %help`, {type: "STREAMING", url: "https://www.twitch.tv/thex49"})
@@ -139,8 +130,17 @@ var servers = {};
 
 if(message.content.startsWith(`${prefix}play`))
 {
-  if(bl.includes(message.author.id)) return blacklist.embedban;
+  if(bl.includes(message.author.id))
+  {
+    const embed = new Discord.RichEmbed()
+    .setTitle("Блокировка :x:")
+    .setColor("#9100ce")
+    .setDescription("Вы были забанены навсегда в боте Bee.")
+    .setTimestamp();
 
+    message.channel.send(embed)
+    return;
+  }
 
   if(!message || !message.channel || message.channel.type === "dm") return;
   if (!args[0]) {
@@ -655,7 +655,17 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}unban`))
   {
-    if(bl.includes(message.author.id)) return blacklist.embedban;
+    if(bl.includes(message.author.id))
+    {
+      const embed = new Discord.RichEmbed()
+      .setTitle("Блокировка :x:")
+      .setColor("#9100ce")
+      .setDescription("Вы были забанены навсегда в боте Bee.")
+      .setTimestamp();
+
+      message.channel.send(embed)
+      return;
+    }
 
     if(!message || !message.channel || message.channel.type === "dm") return;
     let user = args[0]
