@@ -44,7 +44,7 @@ client.on("message", (message) => {
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
-    .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.\n\nОстальное:\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (просто напишите название)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Альфред бота")
+    .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.\n\nОстальное:\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (просто напишите название)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки")
 
     message.channel.send(embed)
     }
@@ -372,11 +372,11 @@ client.on("message", (message) => {
     }
 
     if(!message || !message.channel || message.channel.type === "dm") return;
-    let mute = message.guild.roles.find(role => role.name === "AlfredMute");
+    let mute = message.guild.roles.find(role => role.name === "BeeMute");
     let m = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
     if(message.member.hasPermissions("MANAGE_MESSAGES"))
     {
-      if(!mute) return message.reply("У вас нет роли `AlfredMute`. Создайте и настройте её.")
+      if(!mute) return message.reply("У вас нет роли `BeeMute`. Создайте и настройте её.")
       if(m.roles.has(mute.id)) {
             m.removeRole(mute.id);
         message.channel.send(`${m} был размучен ${message.author}`)
