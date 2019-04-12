@@ -1,4 +1,4 @@
-//дикий секс 
+//дикий секс
 
 const Discord = require("discord.js");
 const weather = require("weather-js");
@@ -12,13 +12,13 @@ const prefix = '%'
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
 const client = new Discord.Client();
-  var bl = ['411277475335897088', '440866756702109706'] 
+  var bl = ['411277475335897088', '440866756702109706']
 
-
-client.on('message', (message) => {
-
-});
-
+  const banned = new Discord.RichEmbed()
+  .setTitle("Блокировка :x:")
+  .setColor("#9100ce")
+  .setDescription("Вы были забанены навсегда в боте Bee.")
+  .setTimestamp();
 
 client.on("ready", () => {
   var activ = setInterval(function() {
@@ -29,18 +29,7 @@ client.user.setActivity(`${client.guilds.size} серверов || %help`, {type
 client.on("message", (message) => {
   if(message.content === `${prefix}help`)
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
-
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
     const embed = new Discord.RichEmbed()
     .setTitle("Команды")
     .setColor("RANDOM")
@@ -70,51 +59,8 @@ client.on("guildDelete", guild => {
   hue.send(guildadd);
 });
 
-//
-//
-
-/*client.on("message", (message) => {
-  let messageArray = message.content.split(" ");
-  let args = messageArray.slice(1);
-
-  function play(connection, message) {
-      var server = servers[message.guild.id];
-      server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
-      server.queue.shift();
-      server.dispatcher.on("end", function() {
-          if(server.queue[0]) play(connection, message);
-          else connection.disconnect();
-      })
-  }
-var servers = {};
-
-if(message.content.startsWith(`${prefix}play`))
-{
-  if(!message || !message.channel || message.channel.type === "dm") return;
-  if (!args[0]) {
-         message.channel.send("Пожалуйста, предоставьте ссылку.");
-         return
-    }
-
-    if(!message.member.voiceChannel) {
-        message.channel.send("Я думаю, вам стоит зайти в голосовой канал.");
-    }
-
-    if(!servers[message.guild.id]) servers[message.guild.id] = {
-        queue: []
-    }
-    var server = servers[message.guild.id];
-
-    server.queue.push(args[0]);
-    message.channel.send("Ваша песня находится в очереди.")
-    if(!message.member.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
-        play(connection, message);
-    })
-}
-});*/
 
 client.on("message", (message) => {
-
 
 let args = message.content.slice(prefix.length).trim().split(/ +/g)
 
@@ -130,17 +76,7 @@ var servers = {};
 
 if(message.content.startsWith(`${prefix}play`))
 {
-  if(bl.includes(message.author.id))
-  {
-    const embed = new Discord.RichEmbed()
-    .setTitle("Блокировка :x:")
-    .setColor("#9100ce")
-    .setDescription("Вы были забанены навсегда в боте Bee.")
-    .setTimestamp();
-
-    message.channel.send(embed)
-    return;
-  }
+  if(bl.includes(message.author.id)) return message.channel.send(banned);
 
   if(!message || !message.channel || message.channel.type === "dm") return;
   if (!args[0]) {
@@ -206,17 +142,7 @@ var servers = {};
 
 if(message.content === `${prefix}stop`)
 {
-  if(bl.includes(message.author.id))
-  {
-    const embed = new Discord.RichEmbed()
-    .setTitle("Блокировка :x:")
-    .setColor("#9100ce")
-    .setDescription("Вы были забанены навсегда в боте Bee.")
-    .setTimestamp();
-
-    message.channel.send(embed)
-    return;
-  }
+  if(bl.includes(message.author.id)) return message.channel.send(banned);
 
   if(!message || !message.channel || message.channel.type === "dm") return;
   var server = servers[message.guild.id];
@@ -264,17 +190,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}userinfo`))
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
     if(!message || !message.channel || message.channel.type === "dm") return;
       let messageArray = message.content.split(" ");
@@ -333,17 +249,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}prune`))
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
     if(!message || !message.channel || message.channel.type === "dm") return;
     if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("отсутствуют права");
@@ -438,17 +344,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}ban`))
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
     if(!message || !message.channel || message.channel.type === "dm") return;
     let bu = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
@@ -485,17 +381,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}kick`))
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
     if(!message || !message.channel || message.channel.type === "dm") return;
     let ku = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
@@ -515,64 +401,13 @@ client.on("message", (message) => {
   };
 });
 
-client.on("message", (message) => {
-
-  if(message.content.startsWith(`${prefix}weather`))
-  {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
-
-        let messageArray = message.content.split(" ");
-        let args = messageArray.slice(1);
-
-    weather.find({search: args.join(" "), degreeType: 'C', lang: 'ru-RU'}, function(err, result) {
-          if (result === undefined || result.length === 0) {
-              message.channel.send("Указанное местоположение отсуствует или неопределенное.")
-              return;
-          }
-                var current = result[0].current;
-                var location = result[0].location;
-
-          const embed = new Discord.RichEmbed()
-          .setTitle(`Погода в ${current.observationpoint}`)
-          .setColor("RANDOM")
-          .setDescription(`**${current.skytext}**`)
-          .addField("Временная зона", `UTC${location.timezone}`)
-          .addField('Температура',`${current.temperature} градусов`)
-          .addField('Ощущается как', `${current.feelslike} градусов`)
-          .addField('Ветер', current.winddisplay)
-          .addField('Влажность', `${current.humidity}%`);
-
-          message.channel.send(embed);
-    });
-  };
-});
 
 client.on("message", (message) => {
 
 
   if(message.content.startsWith(`${prefix}callcenter`))
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
     let call = client.channels.get("560481919868076032")
     let messageArray = message.content.split(" ");
@@ -590,21 +425,40 @@ client.on("message", (message) => {
 });
 
 client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}weather`))
+  {
+    let messageArray = message.content.split(" ");
+    let args = messageArray.slice(1);
 
+    weather.find({search: args.join(" "), degreeType: 'C', lang: 'ru-RU'}, function(err, result) {
+      if (result === undefined || result.length === 0) {
+          message.reply("укажите местоположение или проверьте указанное местоположение.")
+          return;
+      }
+
+  var current = result[0].current;
+      var location = result[0].location;
+      const embed = new Discord.RichEmbed()
+          .setDescription(`**${current.skytext}**`)
+          .setAuthor(`Погода в ${current.observationpoint}`)
+          .setThumbnail(current.imageUrl)
+          .setColor("RANDOM")
+          .addField('Временная зона',`UTC${location.timezone}`, true)
+          .addField('Тип температуры',location.degreetype, true)
+          .addField('Температура',`${current.temperature} градусов`, true)
+          .addField('Ощущается как', `${current.feelslike} градусов`, true)
+          .addField('Ветер', current.winddisplay, true)
+          .addField('Влажность', `${current.humidity}%`, true);
+          message.channel.send({embed});
+    });
+  }
+});
+
+client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}snipe`))
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee. ")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
   let snipe = message.mentions.users.first()
 
@@ -625,17 +479,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}avatar`))
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
     if(!message || !message.channel || message.channel.type === "dm") return;
      let user = message.mentions.users.first() || message.author;
@@ -655,17 +499,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith(`${prefix}unban`))
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
     if(!message || !message.channel || message.channel.type === "dm") return;
     let user = args[0]
@@ -692,17 +526,7 @@ client.on("message", (message) => {
 
   if(message.content === `${prefix}pron`)
   {
-    if(bl.includes(message.author.id))
-    {
-      const embed = new Discord.RichEmbed()
-      .setTitle("Блокировка :x:")
-      .setColor("#9100ce")
-      .setDescription("Вы были забанены навсегда в боте Bee.")
-      .setTimestamp();
-
-      message.channel.send(embed)
-      return;
-    }
+    if(bl.includes(message.author.id)) return message.channel.send(banned);
 
     if(!message.channel.nsfw) return message.reply("у канала нет флага NSFW");
     request('https://nekobot.xyz/api/image?type=pgif', function (error, response, body) {
@@ -735,5 +559,24 @@ client.on('message', (message) => {
     ch.send(embed)
   }
 });
+
+/*client.on('message', (message) => {
+  if(message.content.startsWith(">run"))
+  {
+  let messageArray = message.content.split(" ");
+    if(message.author.id != "339462715917729792") return;
+    if(message.channel.type !== `text` || message.author.bot) return;
+    let args = messageArray.slice(1);
+      const command = args.join(" ");
+          if (command === 'fun') message.delete();
+          const code = args.join(" ");
+          try {
+              let output = eval(code);
+              if (output.length < 1950) message.channel.send(output, {code : 'js'}).then(() => {message.react("✅")});
+              else message.channel.send(output, {split : '\n', code : 'js'}).then(() => {message.react("✅")});
+          }
+          catch (error) { message.channel.send(` \`\`\`js\n${error}\`\`\``).then(() => message.react("❎")) };
+  }
+}); */
 
 client.login(cfg.token);
