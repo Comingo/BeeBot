@@ -52,7 +52,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Команды")
       .setColor("RANDOM")
-      .setDescription("**Все команды бота**\n\n***Модерация:***\n*%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%warn - варн\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.*\n\n***Остальное:***\n*%8ball - шар предсказаний\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе*\n\n***Музыка:***\n*%play - включить песню (просто напишите название)\n%stop - остановить игру*\n\n***Анимация:***\n*%hug - обнять\n%slap - дать пощечины\n%kiss - поцеловать*\n\n***Помощь:***\n*%botinfo - информация о боте\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки*")
+      .setDescription("**Все команды бота**\n\n***Модерация:***\n*%roleinfo - информация о роли\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%warn - варн\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.*\n\n***Остальное:***\n*%8ball - шар предсказаний\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе*\n\n***Музыка:***\n*%play - включить песню (просто напишите название)\n%stop - остановить игру*\n\n***Анимация:***\n*%hug - обнять\n%slap - дать пощечины\n%kiss - поцеловать*\n\n***Помощь:***\n*%botinfo - информация о боте\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки*")
 
       message.channel.send(embed)
     }
@@ -661,6 +661,30 @@ client.on("message", (message) => {
 
       if(kuser) return message.channel.send(embed)
       if(!kuser) return message.reply("вы забыли упомянуть пользователя")
+  }
+});
+
+client.on("message", (message) => {
+  let messageArray = message.content.split(" ");
+  let args = messageArray.slice(1);
+
+  if(message.content.startsWith(`${prefix}roleinfo`))
+  {
+    let role = message.mentions.roles.first();
+    if(!role) return message.reply("вы забыли упомянуть роль");
+
+    const embed = new Discord.RichEmbed()
+    .setTitle("Role Info")
+    .setColor("RANDOM")
+    .addField("Роль", role.name, true)
+    .addField("Участников с данной ролью", role.members.size, true)
+    .addField("HEX-color роли", role.hexColor, true)
+    .addField('Дата создания роли', role.createdAt.toDateString(), true)
+    .addField("Отображается-ли отдельно? (true/false)", role.hoist, true)
+    .addField("Можно ли упомянуть? (true/false)", role.mentionable, true)
+    .addField("Позиция в списке ролей", role.position, true);
+
+    message.channel.send(embed);
   }
 });
 
