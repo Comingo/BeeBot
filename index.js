@@ -40,7 +40,7 @@ client.on("ready", () => {
   })
 
   var activ = setInterval(function() {
-client.user.setActivity(`${client.guilds.size} серверов || %help`, {type: "STREAMING", url: "https://www.twitch.tv/thex49"})
+client.user.setActivity(`${client.guilds.size} серверов || %help`, {type: "STREAMING", url: "https://www.twitch.tv/monstercat"})
   }, 5000);
 });
 
@@ -52,7 +52,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Команды")
       .setColor("RANDOM")
-      .setDescription("Все команды бота.\n\nМодерация:\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%warn - варн\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.\n\nОстальное:\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе\n\nМузыка:\n%play - включить песню (просто напишите название)\n%stop - остановить игру\n\nПомощь:\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки")
+      .setDescription("**Все команды бота**\n\n***Модерация:***\n*%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%warn - варн\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.*\n\n***Остальное:***\n*%8ball - шар предсказаний\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе*\n\n***Музыка:***\n*%play - включить песню (просто напишите название)\n%stop - остановить игру*\n\n***Анимация:***\n*%hug - обнять\n%slap - дать пощечины\n%kiss - поцеловать*\n\n***Помощь:***\n*%botinfo - информация о боте\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки*")
 
       message.channel.send(embed)
     }
@@ -78,6 +78,20 @@ client.on("guildDelete", guild => {
   hue.send(guildadd);
 });
 
+
+client.on("message", (message) => {
+  if(message.content === `${prefix}botinfo`)
+  {
+    const embed = new Discord.RichEmbed()
+    .setTitle("BOTINFO")
+    .setColor("RANDOM")
+    .setTimestamp()
+    .addField("Имя бота", `${client.user.username}`)
+    .addField("Версия", `alpha-1.4.4`)
+    .addField("Создатель", "rippleknight🔥#0001");
+    message.channel.send(embed);
+  }
+});
 
 client.on("message", (message) => {
 
@@ -573,7 +587,7 @@ client.on('message', (message) => {
   let messageArray = message.content.split(" ");
   let args = messageArray.slice(1);
 
-  if(message.content.startsWith(`${prefix}bandbuser`))
+  if(message.content.startsWith(`${prefix}blockdbuser`))
   {
     let user = args[0]
     connection.query(`INSERT INTO banned(user_id, reason) VALUES ('${user}', 'Забанен за плохое деяние')`, function(err, results) {
@@ -584,5 +598,70 @@ client.on('message', (message) => {
 });
 
 
+client.on("message", (message) => {
+  let messageArray = message.content.split(" ");
+  let args = messageArray.slice(1);
+
+  if(message.content.startsWith(`${prefix}8ball`))
+  {
+    if(banuser.has(message.author.id)) return message.channel.send(banned);
+    let phrases = ['Абсолютно нет', 'Однозначно', 'Не уверен', 'Да', 'Дай пельменей пожрать спокойно (сэ_сэ)', 'В слове да нет слова нет, в нём есть только да']
+    let phrasa = Math.floor(Math.random() * phrases.length);
+    if(!args.join(" ")) return message.reply("ты не хочешь задавать мне вопросы?");
+    const embed = new Discord.RichEmbed()
+    .setTitle("8BALL")
+    .setColor("RANDOM")
+    .setDescription(`Вопрос: **${args.join(" ")}**\n\nОтвет: **${phrases[phrasa]}**`);
+    message.channel.send(embed)
+  };
+});
+
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}hug`))
+  {
+    if(banuser.has(message.author.id)) return message.channel.send(banned);
+      let huser = message.mentions.users.first()
+
+      const embed = new Discord.RichEmbed()
+      .setColor("RANDOM")
+      .setDescription(`${message.author} обнял ${huser}`)
+      .setImage("https://media0.giphy.com/media/42YlR8u9gV5Cw/giphy.gif?cid=790b76115cc9c9c7713069547729c734&rid=giphy.gif")
+
+      if(huser) return message.channel.send(embed)
+      if(!huser) return message.reply("вы забыли упомянуть пользователя")
+  }
+});
+
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}slap`))
+  {
+    if(banuser.has(message.author.id)) return message.channel.send(banned);
+      let suser = message.mentions.users.first()
+
+      const embed = new Discord.RichEmbed()
+      .setColor("RANDOM")
+      .setDescription(`${message.author} дал пизды ${suser}`)
+      .setImage("https://media0.giphy.com/media/1ZszhyLPNiC4vUI2Sv/giphy.gif?cid=790b76115cc9cc4676774f2f3660325b&rid=giphy.gif")
+
+      if(suser) return message.channel.send(embed)
+      if(!suser) return message.reply("вы забыли упомянуть пользователя")
+  }
+});
+
+client.on("message", (message) => {
+  if(message.content.startsWith(`${prefix}kiss`))
+  {
+    if(banuser.has(message.author.id)) return message.channel.send(banned);
+      let kuser = message.mentions.users.first()
+
+      const embed = new Discord.RichEmbed()
+      .setColor("RANDOM")
+      .setDescription(`${message.author} поцеловал ${kuser}`)
+      .setImage("https://media1.tenor.com/images/a66f4ac0deded0a2a12260cb1af11c3c/tenor.gif?itemid=11034277")
+
+      if(kuser) return message.channel.send(embed)
+      if(!kuser) return message.reply("вы забыли упомянуть пользователя")
+  }
+});
 
 client.login(cfg.token);
