@@ -58,25 +58,6 @@ client.on("message", (message) => {
     }
 });
 
-client.on("guildCreate", guild => {
-  let hue = client.channels.get("555426672225157132")
-  const guildadd = new Discord.RichEmbed()
-  .setTitle("Новый гилд.")
-  .setColor("RANDOM")
-  .setDescription(`Имя сервера: ${guild.name}\n\nОвнер: ${guild.owner}\n\n Гилд-ид: ${guild.id}`)
-  .setFooter("Alfred");
-  hue.send(guildadd);
-});
-
-client.on("guildDelete", guild => {
-  let hue = client.channels.get("555426672225157132")
-  const guildadd = new Discord.RichEmbed()
-  .setTitle("Пока, гилд.")
-  .setColor("RANDOM")
-  .setDescription(`Имя сервера: ${guild.name}\n\nОвнер: ${guild.owner}\n\n Гилд-ид: ${guild.id}`)
-  .setFooter("Alfred");
-  hue.send(guildadd);
-});
 
 
 client.on("message", (message) => {
@@ -562,26 +543,6 @@ client.on("message", (message) => {
 
       message.channel.send(embed)
       });
-
-  }
-});
-
-client.on('message', (message) => {
-
-  let ch = client.channels.get("564364090244595713")
-  if(message.content.startsWith(`${prefix}`))
-  {
-    const embed = new Discord.RichEmbed()
-    .setTitle("LOGS")
-    .setColor("RANDOM")
-    .setTimestamp()
-    .addField("Имя гилда", message.guild)
-    .addField("Имя пользователя", message.author.username)
-    .addField("Контент", message.content)
-    .setFooter("Время");
-    ch.send(embed)
-  }
-});
 
 client.on('message', (message) => {
   let messageArray = message.content.split(" ");
