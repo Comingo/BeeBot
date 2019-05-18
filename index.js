@@ -52,13 +52,11 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Команды")
       .setColor("RANDOM")
-      .setDescription("**Все команды бота**\n\n***Модерация:***\n*%roleinfo - информация о роли\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%warn - варн\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.*\n\n***Остальное:***\n*%8ball - шар предсказаний\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%callcenter - попросить помощь разработчиков\n%userinfo - информация о пользователе*\n\n***Музыка:***\n*%play - включить песню (просто напишите название)\n%stop - остановить игру*\n\n***Анимация:***\n*%hug - обнять\n%slap - дать пощечины\n%kiss - поцеловать*\n\n***Помощь:***\n*%botinfo - информация о боте\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки*")
+      .setDescription("**Все команды бота**\n\n***Модерация:***\n*%roleinfo - информация о роли\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%warn - варн\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.*\n\n***Остальное:***\n*%8ball - шар предсказаний\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%userinfo - информация о пользователе*\n\n***Музыка:***\n*%play - включить песню (просто напишите название)\n%stop - остановить игру*\n\n***Анимация:***\n*%hug - обнять\n%slap - дать пощечины\n%kiss - поцеловать*\n\n***Помощь:***\n*%botinfo - информация о боте\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки*")
 
       message.channel.send(embed)
     }
 });
-
-
 
 client.on("message", (message) => {
   if(message.content === `${prefix}botinfo`)
@@ -409,27 +407,6 @@ client.on("message", (message) => {
   };
 });
 
-
-client.on("message", (message) => {
-
-
-  if(message.content.startsWith(`${prefix}callcenter`))
-  {
-    if(banuser.has(message.author.id)) return message.channel.send(banned);
-      let call = client.channels.get("560481919868076032")
-      let messageArray = message.content.split(" ");
-      let args = messageArray.slice(1);
-      message.channel.send("Вскоре вам напишет разработчик бота.")
-
-      const embed = new Discord.RichEmbed()
-      .setTitle("CallCenter")
-      .setColor("RANDOM")
-      .setDescription(`Автор: ${message.author}\n\nГилд: ${message.guild.name} \n\nТег: ${message.author.tag}\n\nЗапрос: ${message.content}`);
-
-      call.send(embed);
-  };
-});
-
 client.on("message", (message) => {
   if(message.content.startsWith(`${prefix}weather`))
   {
@@ -543,6 +520,9 @@ client.on("message", (message) => {
 
       message.channel.send(embed)
       });
+
+  }
+});
 
 client.on('message', (message) => {
   let messageArray = message.content.split(" ");
