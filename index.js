@@ -80,10 +80,8 @@ let args = message.content.slice(prefix.length).trim().split(/ +/g)
       var server = servers[message.guild.id];
       server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
       server.dispatcher.on("end", function() {
-          if(server.queue[0]) play(connection, message)
+          if(server.dispatcher) play(connection, message)
           else connection.disconnect();    
-      if(server.dispatcher){server.dispatcher.end()
-      server.queue.shift()};
       })
   }
 var servers = {};
@@ -123,8 +121,6 @@ if(message.content.startsWith(`${prefix}play`))
         function play(connection, message) {
             var server = servers[message.guild.id];
             server.dispatcher = connection.playStream(YTDL(`https://youtube.com${firstResult.url}`, {filter: "audioonly"}));
-                if(server.dispatcher){server.dispatcher.end()
-                server.queue.shift()};
         }
 
         server.queue.shift();
