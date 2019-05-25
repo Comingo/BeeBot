@@ -81,8 +81,11 @@ let args = message.content.slice(prefix.length).trim().split(/ +/g)
       server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
       server.dispatcher.on("end", function() {
           if(server.dispatcher) play(connection, message)
-          else connection.disconnect();    
-      })
+          else {
+          connection.disconnect();    
+          message.guild.voiceConnection.disconnect()
+          }
+         })
   }
 var servers = {};
 
