@@ -14,6 +14,25 @@ let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
 const client = new Discord.Client();
 
+
+  const banned = new Discord.RichEmbed()
+  .setTitle("Блокировка :x:")
+  .setColor("#9100ce")
+  .setDescription("Вы были забанены навсегда в боте Bee.")
+  .setTimestamp();
+
+
+var connection = mysql.createConnection({
+  host: '37.59.55.185',
+  user: "PgsPLLgsAo",
+  password: "sVOHIru5EW",
+  database: 'PgsPLLgsAo'
+})
+
+connection.connect();
+
+const banuser = new Set();
+
 client.on("message", (message) => {
 
 let args = message.content.slice(prefix.length).trim().split(/ +/g)
