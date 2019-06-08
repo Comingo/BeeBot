@@ -29,6 +29,7 @@ let args = message.content.slice(prefix.length).trim().split(/ +/g)
           }
          })
   }
+  
 var servers = {};
 
 if(message.content.startsWith(`${prefix}play`))
@@ -49,7 +50,6 @@ if(message.content.startsWith(`${prefix}play`))
           queue: []
       }
       var server = servers[message.guild.id];
-
 
       ytSearch(args.join(' '), function(err, r) {
         console.log(args)
