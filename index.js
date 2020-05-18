@@ -14,9 +14,6 @@ var mysql = require("mysql")
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
 const client = new Discord.Client();
-let xp = require("./xp.json")
-
-const banuser = new Set();
 
 client.on("ready", () => {
   var activ = setInterval(function() {
