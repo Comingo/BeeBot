@@ -9,6 +9,7 @@ const strftime = require("strftime");
 const YTDL = require("ytdl-core")
 const ytSearch = require("yt-search")
 const prefix = '%'
+var cpuStats = require("cpu-stats")
 const fs = require("fs")
 var mysql = require("mysql")
 let embeds = require("./data/embeds.js")
@@ -38,14 +39,15 @@ client.on("message", (message) => {
 client.on("message", (message) => {
   if(message.content === `${prefix}botinfo`)
   {
-    const embed = new Discord.RichEmbed()
-    .setTitle("Bot info")
-    .setColor("RANDOM")
-    .setTimestamp()
-    .addField("Имя бота", `${client.user.username}`)
-    .addField("Версия", `alpha-1.4.4`)
-    .addField("Создатель", "red undead#6150");
-    message.channel.send(embed);
+  const embed = new Discord.RichEmbed()
+  .setTitle("Bot info")
+  .setColor("RANDOM")
+  .setTimestamp()
+  .addField("Имя бота", `${client.user.username}`)
+  .addField("Версия", `alpha-1.5`)
+  .addField("SHARDS", `shard#01`)
+  .addField("Создатель", "red undead#6150");
+  message.channel.send(embed);
   }
 });
 
@@ -489,5 +491,6 @@ client.on("message", (message) => {
     message.channel.send(embed);
   }
 });
+
 
 client.login(cfg.token);
