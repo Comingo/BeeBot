@@ -3,6 +3,7 @@
 const Discord = require("discord.js");
 const weather = require("weather-js");
 const moment = require("moment");
+const nodemailer = require("nodemailer");
 const request = require("request")
 const math = require('mathjs')
 const strftime = require("strftime");
@@ -14,6 +15,7 @@ var mysql = require("mysql")
 let embeds = require("./data/embeds.js")
 const cfg = require("./data/config.js");
 const client = new Discord.Client();
+
 
 client.on("ready", () => {
   var activ = setInterval(function() {
@@ -28,7 +30,7 @@ client.on("message", (message) => {
       const embed = new Discord.RichEmbed()
       .setTitle("Команды")
       .setColor("RANDOM")
-      .setDescription("**Все команды бота**\n\n***Модерация:***\n*%roleinfo - информация о роли\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%warn - варн\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.*\n\n***Остальное:***\n*%8ball - шар предсказаний\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%userinfo - информация о пользователе*\n\n***Музыка (ЕЩЕ НЕ АКТИВНО):***\n*%play - включить песню (просто напишите название)\n%stop - остановить игру*\n\n***Анимация:***\n*%hug - обнять\n%slap - дать пощечины\n%kiss - поцеловать*\n\n***Помощь:***\n*%botinfo - информация о боте\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки*")
+      .setDescription("**Все команды бота**\n\n***Модерация:***\n*%roleinfo - информация о роли\n%poll - голосование.\n%sinfo - информация о сервере.\n%prune - очистка сообщений\n%warn - варн\n%mute - мут пользователя\n%kick/%ban - кик/бан пользователя.\n%unban id - разбан пользователя.*\n\n***Остальное:***\n*%8ball - шар предсказаний\n%pron - го пофапаем\n%avatar - отображить аватар пользователя\n%weather - погода\n%userinfo - информация о пользователе*\n\n***Музыка (ОТКЛЮЧЕНО):***\n*%play - включить песню (просто напишите название)\n%stop - остановить игру*\n\n***Анимация:***\n*%hug - обнять\n%slap - дать пощечины\n%kiss - поцеловать*\n\n***Помощь:***\n*%botinfo - информация о боте\n%botinvite - пригласить бота на свой сервер\n%support - сервер Пчёлки*")
 
       message.channel.send(embed)
     }
@@ -38,100 +40,14 @@ client.on("message", (message) => {
   if(message.content === `${prefix}botinfo`)
   {
     const embed = new Discord.RichEmbed()
-    .setTitle("BOTINFO")
+    .setTitle("Bot info")
     .setColor("RANDOM")
     .setTimestamp()
     .addField("Имя бота", `${client.user.username}`)
     .addField("Версия", `alpha-1.4.4`)
-    .addField("Создатель", "rippleknight🔥#0001");
+    .addField("Создатель", "red undead#6150");
     message.channel.send(embed);
   }
-});
-
-client.on("message", (message) => {
-
-let args = message.content.slice(prefix.length).trim().split(/ +/g)
-
-  function play(connection, message) {
-      var server = servers[message.guild.id];
-      server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
-      server.dispatcher.on("end", function() {
-          if(server.dispatcher) play(connection, message)
-          else connection.disconnect();
-      })
-  }
-var servers = {};
-
-if(message.content.startsWith(`${prefix}play`))
-{
-    if(!message || !message.channel || message.channel.type === "dm") return;
-    if (!args[0]) {
-           message.channel.send("Пожалуйста, скажите название видео.");
-           return
-      }
-
-      if(!message.member.voiceChannel) {
-          message.channel.send("Я думаю, вам стоит зайти в голосовой канал.");
-          return;
-      }
-
-      if(!servers[message.guild.id]) servers[message.guild.id] = {
-          queue: []
-      }
-      var server = servers[message.guild.id];
-
-
-      ytSearch(args.join(' '), function(err, r) {
-        console.log(args)
-
-        if ( err ) throw err
-        const videos = r.videos
-        const playlists = r.playlists
-        const accounts = r.accounts
-
-        const firstResult = videos[0]
-
-      message.channel.send(`Ваша песня находится в очереди. Вот, что мы нашли: :notes: ${firstResult.title}\n\n`)
-
-        function play(connection, message) {
-            var server = servers[message.guild.id];
-            server.dispatcher = connection.playStream(YTDL(`https://youtube.com${firstResult.url}`, {filter: "audioonly"}));
-        }
-
-        server.queue.shift();
-        server.queue.push(firstResult.url);
-        if(message.member.voiceConnection) return function(connection) {
-          play(connection, message);
-        }
-        if(!message.member.voiceConnection) return message.member.voiceChannel.join().then(function(connection) {
-             play(connection, message);
-            })
-      });
-}
-});
-
-
-
-
-client.on("message", (message) => {
-
-  function play(connection, message) {
-    var server = servers[message.guild.id];
-    server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
-    server.queue.shift();
-    server.dispatcher.on("end", function() {
-        if(server.queue[0]) play(connection, message)
-        else connection.disconnect();
-    })
-  }
-var servers = {};
-
-if(message.content === `${prefix}stop`)
-{
-    if(!message || !message.channel || message.channel.type === "dm") return;
-    var server = servers[message.guild.id];
-    if(message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
-}
 });
 
 client.on("message", (message) => {
@@ -208,7 +124,7 @@ client.on("message", (message) => {
 client.on("message", (message) => {
   if(message.content === `${prefix}support`)
   {
-    message.channel.send("Здесь вы можете спросить помощь: https://discord.gg/zWGQ7Zt");
+    message.channel.send("Здесь вы можете спросить помощь: https://discord.gg/c6J9TMb");
   }
 });
 
@@ -228,6 +144,43 @@ client.on("message", (message) => {
         });
   };
 });
+
+client.on("message", async (message) => {
+
+  let messageArray = message.content.split(" ");
+  let args = messageArray.slice(1);
+
+  if(message.content.startsWith(`${prefix}verify`))
+  {
+      let account = await nodemailer.createTestAccount();
+    let transporter = nodemailer.createTransport({
+      service: "mail.yandex.ru",
+      auth: {
+        user: "no-reply@beebot.icu",
+        pass: "z55asdasd"
+      }
+    });
+
+    let code = Math.floor(Math.random()* 9999)
+	console.log(code);
+
+  let mail = args.join("").slice(0);
+
+   let mailOptions = {
+    from: '"Azura Support" azura.spprt@gmail.com',
+    to: mail,
+    subject: "Подтверждение на вход в сервер тестирования бота Azura",
+    html: `Ваш код: ${code}. Сообщите его администратору сервера.\n\nС уважением,\nRussian Development/moonlight.\n\n<a href='https://discord.gg/jAPhANd'>Наш сервер в дискорд.</a>`
+  };
+
+
+  let info = await transporter.sendMail(mailOptions);
+
+  let owner = client.channels.get("712056284777807933");
+  owner.send(`Код: ${code}\n\nЗапросил: ${message.author.username}\n\nПочта: ${mail}`)
+  }
+});
+
 
 client.on("message", (message) => {
 
