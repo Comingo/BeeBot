@@ -3,7 +3,6 @@
 const Discord = require("discord.js");
 const weather = require("weather-js");
 const moment = require("moment");
-const nodemailer = require("nodemailer");
 const request = require("request")
 const math = require('mathjs')
 const strftime = require("strftime");
@@ -143,42 +142,6 @@ client.on("message", (message) => {
       message.channel.send(`Удалено ${args[0]} сообщение(ий)`).then(msg => msg.delete(2000));
         });
   };
-});
-
-client.on("message", async (message) => {
-
-  let messageArray = message.content.split(" ");
-  let args = messageArray.slice(1);
-
-  if(message.content.startsWith(`${prefix}verify`))
-  {
-      let account = await nodemailer.createTestAccount();
-    let transporter = nodemailer.createTransport({
-      service: "mail.yandex.ru",
-      auth: {
-        user: "no-reply@beebot.icu",
-        pass: "z55asdasd"
-      }
-    });
-
-    let code = Math.floor(Math.random()* 9999)
-	console.log(code);
-
-  let mail = args.join("").slice(0);
-
-   let mailOptions = {
-    from: '"Azura Support" azura.spprt@gmail.com',
-    to: mail,
-    subject: "Подтверждение на вход в сервер тестирования бота Azura",
-    html: `Ваш код: ${code}. Сообщите его администратору сервера.\n\nС уважением,\nRussian Development/moonlight.\n\n<a href='https://discord.gg/jAPhANd'>Наш сервер в дискорд.</a>`
-  };
-
-
-  let info = await transporter.sendMail(mailOptions);
-
-  let owner = client.channels.get("712056284777807933");
-  owner.send(`Код: ${code}\n\nЗапросил: ${message.author.username}\n\nПочта: ${mail}`)
-  }
 });
 
 
