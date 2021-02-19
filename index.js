@@ -1,4 +1,3 @@
-//дикий секс
 
 const Discord = require("discord.js");
 const weather = require("weather-js");
@@ -40,13 +39,12 @@ client.on("message", (message) => {
   if(message.content === `${prefix}botinfo`)
   {
   const embed = new Discord.RichEmbed()
-  .setTitle("Bot info")
+  .setTitle("Информация")
   .setColor("RANDOM")
   .setTimestamp()
   .addField("Имя бота", `${client.user.username}`)
-  .addField("Версия", `alpha-1.5`)
-  .addField("SHARDS", `shard#01`)
-  .addField("Создатель", "red undead#6150");
+  .addField("Версия", `alpha-1.7`)
+  .addField("Создатель", "Leuchte#2048");
   message.channel.send(embed);
   }
 });
@@ -61,8 +59,6 @@ client.on("message", (message) => {
       .setColor("RANDOM")
       .addField('Название',message.guild.name,true)
       .addField('ID',message.guild.id,true)
-      .addField(`Создатель`,message.guild.owner,true)
-      .addField('Тег создателя',message.guild.owner.user.tag,true)
       .addField('Каналов',`**Всего:** ${message.guild.channels.size} \n :computer:**Категорий:** ${message.guild.channels.filter(c => c.type === "category").size} \n :keyboard:**Текстовых:** ${message.guild.channels.filter(c => c.type === "text").size} \n :microphone2:**Голосовых:** ${message.guild.channels.filter(c => c.type === "voice").size}`,true)
       .addField('Количество пользователей',`**Всего:** ${message.guild.members.size} \n **Онлайн:** ${message.guild.members.filter(s => s.presence.status ===  "online").size} \n **Нет на месте:** ${message.guild.members.filter(s => s.presence.status ===  "idle").size} \n **Оффлайн:** ${message.guild.members.filter(s => s.presence.status === "offline").size}`,true)
       .addField('Количество ролей',message.guild.roles.size,true)
@@ -156,7 +152,7 @@ client.on("message", (message) => {
       let m = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
       if(message.member.hasPermissions("MANAGE_MESSAGES"))
       {
-        if(!mute) return message.reply("У вас нет роли `BeeMute`. Создайте и настройте её.")
+        if(!mute) return message.reply("У вас нет роли `BeeMute`. Создайте и ограничьте в ней права на отправку сообщений.")
         if(m.roles.has(mute.id)) {
               m.removeRole(mute.id);
           message.channel.send(`${m} был размучен ${message.author}`)
@@ -212,19 +208,19 @@ client.on("message", (message) => {
 
       let br = args.join(" ").slice(22);
 
-      if(!br) return message.channel.send(`Причина не указана.`);
+      if(!br) return message.channel.send(`Советуем указать причину.`);
 
       if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("У Вас нет прав администратора");
 
       if(bu.hasPermission("ADMINISTRATOR")) return message.channel.send("У данного участника есть права администратора.");
 
       let banEmbed = new Discord.RichEmbed()
-      .setDescription("~Отлетел~")
+      .setDescription("Информация")
       .setColor("RANDOM")
       .setTimestamp()
-      .addField("Забанен", `${bu} с ID ${bu.id}`)
-      .addField("Забанен юзером", `<@${message.author.id}> с ID ${message.author.id}`)
-      .addField("Забанен через канал", message.channel)
+      .addField("Выдан бан", `${bu} с ID ${bu.id}`)
+      .addField("Бан выдан", `<${message.author.id}> с ID ${message.author.id}`)
+      .addField("Было выполнено в канале", message.channel)
       .addField("Причина", br)
       .setFooter("Время");
 
@@ -254,7 +250,7 @@ client.on("message", (message) => {
       if(bu.hasPermission("KICK_MEMBERS")) return message.channel.send("У данного участника есть права *Кикать участников*");
 
       let warnEmbed = new Discord.RichEmbed()
-      .setDescription("Варн")
+      .setDescription("Информация")
       .setColor("RANDOM")
       .setTimestamp()
       .addField("Вам был выдан варн модератором", `<@${message.author.id}> с ID ${message.author.id}`)
@@ -262,7 +258,7 @@ client.on("message", (message) => {
       .setFooter("Время");
 
       bu.send(warnEmbed);
-      message.channel.send("Варн успешно выдан пользователю");
+      message.channel.send(`Варн успешно выдан пользователю ${bu}.`);
   };
 });
 
@@ -280,14 +276,14 @@ client.on("message", (message) => {
 
       let kr = args.join(" ").slice(22);
 
-      if(!kr) return message.channel.send(`Причина не указана.`);
+      if(!kr) return message.channel.send(`Советуем указать причину.`);
 
       if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("У Вас нет прав администратора");
 
       if(ku.hasPermission("ADMINISTRATOR")) return message.channel.send("У данного участника есть права администратора.");
 
       message.guild.member(ku).kick(kr);
-      message.channel.send("Пользователь успешно кикнут");
+      message.channel.send(`Пользователь ${ku} успешно кикнут`);
 
   };
 });
@@ -343,6 +339,14 @@ client.on("message", (message) => {
 
 client.on("message", (message) => {
 
+  if(message.content.startsWith(`${prefix}kj`))
+  {
+    message.reply("DO YOU LIKE A FUCKING KJ?")
+  }
+});
+
+client.on("message", (message) => {
+
   if(message.content.startsWith(`${prefix}avatar`))
   {
       if(!message || !message.channel || message.channel.type === "dm") return;
@@ -372,7 +376,7 @@ client.on("message", (message) => {
       message.guild.unban(user);
 
       let banEmbed = new Discord.RichEmbed()
-      .setDescription("~Влетел~")
+      .setDescription("Информация")
       .setColor("RANDOM")
       .setTimestamp()
       .addField("Разбанен", `Пользователь <@${user}> с ID: ${user}`)
@@ -478,14 +482,13 @@ client.on("message", (message) => {
     if(!role) return message.reply("вы забыли упомянуть роль");
 
     const embed = new Discord.RichEmbed()
-    .setTitle("Role Info")
+    .setTitle("Информация о роли")
     .setColor("RANDOM")
     .addField("Роль", role.name, true)
-    .addField("Участников с данной ролью", role.members.size, true)
+    .addField("Участников с данной ролью", `${role.members.size} участника(ов)`, true)
     .addField("HEX-color роли", role.hexColor, true)
-    .addField('Дата создания роли', role.createdAt.toDateString(), true)
-    .addField("Отображается-ли отдельно? (true/false)", role.hoist, true)
-    .addField("Можно ли упомянуть? (true/false)", role.mentionable, true)
+    .addField("Отображается-ли отдельно? (true (да)/false (нет))", role.hoist, true)
+    .addField("Можно ли упомянуть? (true (да)/false (нет))", role.mentionable, true)
     .addField("Позиция в списке ролей", role.position, true);
 
     message.channel.send(embed);
