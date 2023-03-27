@@ -83,8 +83,6 @@ client.on('message', async message => {
   }
 });
 
-client.login('your-token-goes-here');
-
 client.on("message", (message) => {
 
   if(message.content === `${prefix}sinfo`)
