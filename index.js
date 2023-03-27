@@ -7,6 +7,9 @@ const math = require('mathjs')
 const strftime = require("strftime");
 const YTDL = require("ytdl-core")
 const ytSearch = require("yt-search")
+const { createCanvas, loadImage } = require('canvas');
+const canvas = createCanvas(400, 400);
+const ctx = canvas.getContext('2d');
 const prefix = '%'
 var cpuStats = require("cpu-stats")
 const fs = require("fs")
@@ -48,6 +51,39 @@ client.on("message", (message) => {
   message.channel.send(embed);
   }
 });
+
+client.on('message', async message => {
+  if (message.content === '>parse') {
+    const messages = await message.channel.messages.fetch({ limit: 100 });
+    const randomMessage = messages.random().content;
+
+    const attachment = message.attachments.random();
+    if (!attachment) {
+      return message.reply('No attachments found in this channel.');
+    }
+    message.channel.send("жди")
+    const image = await loadImage(attachment.url);
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 350, canvas.width, 50);
+    ctx.fillStyle = 'black';
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(randomMessage, canvas.width / 2, 380);
+
+    const attachmentName = attachment.name.split('.').shift();
+    const buffer = canvas.toBuffer('image/jpeg', { quality: 0.8 });
+    const attachmentMessage = await message.channel.send({
+      files: [{ attachment: buffer, name: `${attachmentName}.jpg` }]
+
+    });
+
+    console.log(`Created meme: ${attachmentMessage.attachments.first().url}`);
+  }
+});
+
+client.login('your-token-goes-here');
 
 client.on("message", (message) => {
 
